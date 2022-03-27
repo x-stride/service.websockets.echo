@@ -43,7 +43,7 @@ class Client:
 
 class Service(xbmc.Monitor):
     async def run(self):
-        xbmc.log('AVController: run')
+        xbmc.log(f'{SERVICE_FN}: run')
         try:
             async with Client("ws://echo.websocket.events/") as client:
                 while True:
@@ -53,15 +53,18 @@ class Service(xbmc.Monitor):
                         xbmc.sleep(1000)
                         timer -= 1
                         await asyncio.sleep(0)
+                    self.waitForAbort(1)
         except Exception as e:
-            xbmc.log(f'AVController: Exception {str(e)}')
-            xbmcgui.Dialog().notification('Heading', str(e))
+            xbmc.log(f'{SERVICE_FN}: Exception {str(e)}')
+            xbmcgui.Dialog().notification(f'{SERVICE_FN}', str(e))
             await asyncio.sleep(0)
             raise
 
 
 if __name__ == '__main__':
     xbmc.sleep(2000)
+    service = Service()
     asyncio.run(
-        Service().run()
+        service.run()
     )
+    del service

@@ -11,7 +11,7 @@
     <extension point="xbmc.addon.metadata">
         <platform>all</platform>
         <news>POC</news>
-        <summary>Asyncio WS Echo Client</summary>
-        <description>Asyncio WS Echo Client, Python Websockets</description>
+        <summary lang="en_GB">Asyncio WS Echo Client</summary>
+        <description lang="en_GB">Asyncio WS Echo Client, Python Websockets</description>
     </extension>
 </addon>

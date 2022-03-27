@@ -47,6 +47,9 @@ class Service(xbmc.Monitor):
         super().__init__()
 #        self.enabled = xbmcaddon.Addon().getSettingBool('enabled')
 
+    def onNotification(self, sender, method, data):
+        xbmc.log(f'onNotification: {sender}, {method}, {data}', xbmc.LOGINFO)
+
     async def run(self):
         xbmc.log(f'{SERVICE_FN}: run')
         try:

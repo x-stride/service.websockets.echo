@@ -2,6 +2,7 @@ import asyncio
 import websockets
 
 import xbmc
+import xbmcaddon
 import xbmcgui
 
 
@@ -42,23 +43,28 @@ class Client:
 
 
 class Service(xbmc.Monitor):
+    def __init__(self):
+        super().__init__()
+#        self.enabled = xbmcaddon.Addon().getSettingBool('enabled')
+
     async def run(self):
         xbmc.log(f'{SERVICE_FN}: run')
         try:
             async with Client("ws://echo.websocket.events/") as client:
-                while True:
+                while not self.abortRequested():
                     await client.echo('Is there anybody out there?')
                     timer = 10
                     while timer and not self.abortRequested():
                         xbmc.sleep(1000)
                         timer -= 1
                         await asyncio.sleep(0)
-                    self.waitForAbort(1)
         except Exception as e:
             xbmc.log(f'{SERVICE_FN}: Exception {str(e)}')
             xbmcgui.Dialog().notification(f'{SERVICE_FN}', str(e))
             await asyncio.sleep(0)
             raise
+        finally:
+            self.waitForAbort()
 
 
 if __name__ == '__main__':
